@@ -72,9 +72,10 @@ body {
   border-radius: 10px;
   color: white;
 }
-
-.current-score {
+.current-score-1,
+.current-score-2 {
   display: block;
+  padding: 10px;
   font-size: 25px;
 }
 
