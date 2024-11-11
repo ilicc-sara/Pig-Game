@@ -23,7 +23,7 @@ body {
   position: relative;
 }
 
-.screen-1 {
+.player-0 {
   /* background-color: rgb(104, 24, 77); */
   width: 100%;
   height: 100%;
@@ -35,7 +35,7 @@ body {
   text-align: center;
 }
 
-.screen-2 {
+.player-1 {
   /* background-color: rgb(104, 24, 77); */
   width: 100%;
   height: 100%;
@@ -51,15 +51,15 @@ body {
   background-color: rgb(193, 72, 92);
 }
 
-.player1,
-.player2 {
+.name-1,
+.name-2 {
   color: white;
   font-size: 40px;
   font-weight: normal;
 }
 
-.score1,
-.score2 {
+.score-1,
+.score-2 {
   display: block;
 }
 
@@ -74,8 +74,8 @@ body {
   border-radius: 10px;
   color: white;
 }
-.current-score-1,
-.current-score-2 {
+.current-score-0,
+.current-score-1 {
   display: block;
   padding: 10px;
   font-size: 25px;

@@ -1,81 +1,63 @@
 "use strict";
 import "./style.css";
 
-let player1;
-let player2;
-let currentScore1 = 0;
-let currentScore2 = 0;
+let player1 = 0;
+let player2 = 1;
+
 let score1 = 0;
 let score2 = 0;
 
-const rollDiceBtn = document.querySelector(".roll-btn");
+let currentScore1;
+let currentScore2;
+
 const diceEl = document.querySelector(".dice");
+const rollBtnEl = document.querySelector(".roll-btn");
 
-const holdBtn = document.querySelector(".hold-btn");
+const score1El = document.querySelector(".current-score-0");
+const score2El = document.querySelector(".current-score-1");
 
-const screen1 = document.querySelector(".screen-1");
-const screen2 = document.querySelector(".screen-2");
-
-const current1 = document.querySelector(".current-score-1");
-const current2 = document.querySelector(".current-score-2");
-
-const score1El = document.querySelector(".score1");
-const score2El = document.querySelector(".score2");
+const player1El = document.querySelector(".player-0");
+const player2El = document.querySelector(".player-1");
 
 let activePlayer = player1;
 
-rollDiceBtn.addEventListener("click", function () {
+const switchPlayer = function () {
+  if (activePlayer === player1) {
+    activePlayer = player2;
+    player1El.classList.toggle("active");
+    player2El.classList.toggle("active");
+  } else if (activePlayer === player2) {
+    activePlayer = player1;
+    player1El.classList.toggle("active");
+    player2El.classList.toggle("active");
+  }
+};
+
+rollBtnEl.addEventListener("click", function () {
   const dice = Math.trunc(Math.random() * 6) + 1;
   console.log(dice);
-
   diceEl.textContent = dice;
 
-  if (activePlayer === player1) {
-    currentScore1 = currentScore1 + dice;
-    current1.textContent = currentScore1;
-  }
-
   if (activePlayer === player2) {
-    currentScore2 = currentScore2 + dice;
-    current2.textContent = currentScore2;
-  }
-
-  if (dice === 1 && activePlayer === player1) {
-    currentScore1 = 0;
-    current1.textContent = currentScore1;
-    activePlayer = player2;
-    screen2.classList.add("active");
-    screen1.classList.remove("active");
-  }
-
-  if (dice === 1 && activePlayer === player2) {
-    currentScore2 = 0;
-    current2.textContent = currentScore2;
-    activePlayer = player1;
-    screen1.classList.add("active");
-    screen2.classList.remove("active");
-  }
-});
-
-holdBtn.addEventListener("click", function () {
-  if (activePlayer === player1) {
-    score1 = score1 + currentScore1;
-    currentScore1 = 0;
-
-    score1El.textContent = score1;
-    current1.textContent = currentScore1;
-  }
-
-  if (activePlayer === player2) {
-    score2 = score2 + currentScore2;
-    currentScore1 = 0;
-
+    console.log(activePlayer);
+    score2 = score2 + dice;
     score2El.textContent = score2;
-    current2.textContent = currentScore2;
+  }
+
+  if (activePlayer === player1) {
+    console.log(activePlayer);
+    score1 = score1 + dice;
+    score1El.textContent = score1;
+  }
+
+  if (dice === 1) {
+    if (activePlayer === player1) {
+      score1 = 0;
+      score1El.textContent = score1;
+    } else if (activePlayer === player2) {
+      score2 = 0;
+      score2El.textContent = score2;
+    }
+    switchPlayer();
   }
 });
-
-// if (dice === 1) {
-//   screen1.classList.toggle("active");
-//   screen2.classList.toggle("active");
-// }
