@@ -51,13 +51,15 @@ body {
   background-color: rgb(193, 72, 92);
 }
 
-.player {
+.player1,
+.player2 {
   color: white;
   font-size: 40px;
   font-weight: normal;
 }
 
-.score {
+.score1,
+.score2 {
   display: block;
 }
 
