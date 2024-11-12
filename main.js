@@ -48,9 +48,7 @@ const rollFunction = function () {
     console.log(activePlayer);
     currentScore2 = currentScore2 + dice;
     currentScore2El.textContent = currentScore2;
-  }
-
-  if (activePlayer === player1) {
+  } else if (activePlayer === player1) {
     console.log(activePlayer);
     currentScore1 = currentScore1 + dice;
     currentScore1El.textContent = currentScore1;
