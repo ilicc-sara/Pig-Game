@@ -12,31 +12,13 @@ const currentScore2El = document.querySelector(".current-score-2");
 const player1El = document.querySelector(".player-1");
 const player2El = document.querySelector(".player-2");
 
-// const switchPlayer = function () {
-//   if (activePlayer === player1) {
-//     activePlayer = player2;
-//     player1El.classList.toggle("active");
-//     player2El.classList.toggle("active");
-//   } else if (activePlayer === player2) {
-//     activePlayer = player1;
-//     player1El.classList.toggle("active");
-//     player2El.classList.toggle("active");
-//   }
-// };
-
 const gameGenerator = function () {
-  // let player1 = 0;
-  // let player2 = 1;
-
   let score1 = 0;
   let score2 = 0;
 
   let currentScore1 = 0;
   let currentScore2 = 0;
   let activePlayer = "player1";
-
-  // const getPlayer1 = () => player1;
-  // const getPlayer2 = () => player2;
 
   const getScore1 = () => score1;
   const getScore2 = () => score2;
@@ -46,36 +28,51 @@ const gameGenerator = function () {
 
   const getActivePlayer = () => activePlayer;
 
-  const switchActivePlayer = () =>
-    activePlayer === "player1" ? "player2" : "player1";
+  const switchActivePlayer = () => {
+    // activePlayer === "player1" ? "player2" : "player1";
+    if (activePlayer === "player1") {
+      activePlayer = "player2";
+      player1El.classList.toggle("active");
+      player2El.classList.toggle("active");
+    } else if (activePlayer === "player2") {
+      activePlayer = "player1";
+      player1El.classList.toggle("active");
+      player2El.classList.toggle("active");
+    }
+  };
 
-  const increaseCurrentScore1 = (num) => (score1 += num);
-  const increaseCurrentScore2 = (num) => (score2 += num);
+  const increaseCurrentScore1 = (num) => (currentScore1 += num);
+  const increaseCurrentScore2 = (num) => (currentScore2 += num);
 
-  const resetCurrentScore1 = () => (score1 = 0);
-  const resetCurrentScore2 = () => (score2 = 0);
+  const increaseScore1 = (num) => (score1 += num);
+  const increaseScore2 = (num) => (score2 += num);
+
+  const resetCurrentScore1 = () => (currentScore1 = 0);
+  const resetCurrentScore2 = () => (currentScore2 = 0);
+
+  const resetScore1 = () => (score1 = 0);
+  const resetScore2 = () => (score2 = 0);
+
+  const resetActivePlayer = () => (activePlayer = "player1");
 
   // prettier-ignore
   return { getScore1, getScore2, getCurrentScore1, getCurrentScore2, getActivePlayer, switchActivePlayer, 
-    increaseCurrentScore1, increaseCurrentScore2, resetCurrentScore1, resetCurrentScore2}
+    increaseCurrentScore1, increaseCurrentScore2, resetCurrentScore1, resetCurrentScore2, 
+    increaseScore1, increaseScore2, resetScore1, resetScore2, resetActivePlayer}
 };
 
 const game = gameGenerator();
 
-// const switchPlayer = function () {
-//   activePlayer = activePlayer === player1 ? player2 : player1;
-//   // updateUI(activePlayer)
-// };
-
 const rollFunction = function () {
   const dice = Math.trunc(Math.random() * 6) + 1;
-  console.log(dice);
   diceEl.textContent = dice;
 
   if (game.getActivePlayer() === "player2") {
-    game.increaseCurrentScore2(dice);
+    console.log(game.increaseCurrentScore2(dice));
+    currentScore2El.textContent = game.getCurrentScore2();
   } else if (game.getActivePlayer() === "player1") {
-    game.increaseCurrentScore1(dice);
+    console.log(game.increaseCurrentScore1(dice));
+    currentScore1El.textContent = game.getCurrentScore1();
   }
 
   if (dice === 1) {
@@ -86,37 +83,39 @@ const rollFunction = function () {
       game.resetCurrentScore2();
       currentScore2El.textContent = game.getCurrentScore2();
     }
+    game.switchActivePlayer();
+    console.log(game.getActivePlayer());
   }
 };
 
 rollBtnEl.addEventListener("click", rollFunction);
-/*
+
 const holdFunction = function () {
-  if (activePlayer === player1) {
-    score1 = score1 + currentScore1;
-    currentScore1 = 0;
+  if (game.getActivePlayer() === "player1") {
+    game.increaseScore1(game.getCurrentScore1());
+    game.resetCurrentScore1();
 
-    score1El.textContent = score1;
+    score1El.textContent = game.getScore1();
     currentScore1El.textContent = 0;
-    switchPlayer();
-  } else if (activePlayer === player2) {
-    score2 = score2 + currentScore2;
-    currentScore2 = 0;
+    game.switchActivePlayer();
+  } else if (game.getActivePlayer() === "player2") {
+    game.increaseScore2(game.getCurrentScore2());
+    game.resetCurrentScore2();
 
-    score2El.textContent = score2;
+    score2El.textContent = game.getScore2();
     currentScore2El.textContent = 0;
-    switchPlayer();
+    game.switchActivePlayer();
   }
 
-  if (score1 > 50 || score2 > 50) {
+  if (game.getScore1() > 50 || game.getScore2() > 50) {
     rollBtnEl.removeEventListener("click", rollFunction);
     holdBtnEl.removeEventListener("click", holdFunction);
     diceEl.textContent = "";
 
-    if (score1 > 50) {
+    if (game.getScore1() > 50) {
       player1El.classList.add("active");
       player2El.classList.remove("active");
-    } else if (score2 > 50) {
+    } else if (game.getScore2() > 50) {
       player2El.classList.add("active");
       player1El.classList.remove("active");
     }
@@ -126,18 +125,18 @@ const holdFunction = function () {
 holdBtnEl.addEventListener("click", holdFunction);
 
 newGameEl.addEventListener("click", function () {
-  score1 = 0;
-  score2 = 0;
-  score1El.textContent = score1;
-  score2El.textContent = score2;
+  game.resetScore1();
+  game.resetScore2();
+  score1El.textContent = game.getScore1();
+  score2El.textContent = game.getScore2();
 
-  currentScore1 = 0;
-  currentScore2 = 0;
-  currentScore1El.textContent = currentScore1;
-  currentScore2El.textContent = currentScore2;
+  game.resetCurrentScore1();
+  game.resetCurrentScore2();
+  currentScore1El.textContent = game.getCurrentScore1();
+  currentScore2El.textContent = game.getCurrentScore2();
 
   diceEl.textContent = "";
-  activePlayer = player1;
+  game.resetActivePlayer();
 
   player1El.classList.add("active");
   player2El.classList.remove("active");
@@ -145,4 +144,3 @@ newGameEl.addEventListener("click", function () {
   rollBtnEl.addEventListener("click", rollFunction);
   holdBtnEl.addEventListener("click", holdFunction);
 });
-*/
