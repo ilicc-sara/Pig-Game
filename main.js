@@ -63,28 +63,42 @@ const gameGenerator = function () {
 
 const game = gameGenerator();
 
+const uiControlerCreator = function () {
+  const displayCurrentScore1 = () =>
+    (currentScore1El.textContent = game.getCurrentScore1());
+  const displayCurrentScore2 = () =>
+    (currentScore2El.textContent = game.getCurrentScore2());
+
+  const displayScore1 = () => (score1El.textContent = game.getScore1());
+  const displayScore2 = () => (score2El.textContent = game.getScore2());
+
+  // prettier-ignore
+  return { displayCurrentScore1, displayCurrentScore2, displayScore1, displayScore2};
+};
+
+const ui = uiControlerCreator();
+
 const rollFunction = function () {
   const dice = Math.trunc(Math.random() * 6) + 1;
   diceEl.textContent = dice;
 
   if (game.getActivePlayer() === "player2") {
-    console.log(game.increaseCurrentScore2(dice));
-    currentScore2El.textContent = game.getCurrentScore2();
+    game.increaseCurrentScore2(dice);
+    ui.displayCurrentScore2();
   } else if (game.getActivePlayer() === "player1") {
-    console.log(game.increaseCurrentScore1(dice));
-    currentScore1El.textContent = game.getCurrentScore1();
+    game.increaseCurrentScore1(dice);
+    ui.displayCurrentScore1();
   }
 
   if (dice === 1) {
     if (game.getActivePlayer() === "player1") {
       game.resetCurrentScore1();
-      currentScore1El.textContent = game.getCurrentScore1();
+      ui.displayCurrentScore1();
     } else if (game.getActivePlayer() === "player2") {
       game.resetCurrentScore2();
-      currentScore2El.textContent = game.getCurrentScore2();
+      ui.displayCurrentScore2();
     }
     game.switchActivePlayer();
-    console.log(game.getActivePlayer());
   }
 };
 
@@ -94,20 +108,18 @@ const holdFunction = function () {
   if (game.getActivePlayer() === "player1") {
     game.increaseScore1(game.getCurrentScore1());
     game.resetCurrentScore1();
-
-    score1El.textContent = game.getScore1();
-    currentScore1El.textContent = 0;
+    ui.displayScore1();
+    ui.displayCurrentScore1();
     game.switchActivePlayer();
   } else if (game.getActivePlayer() === "player2") {
     game.increaseScore2(game.getCurrentScore2());
     game.resetCurrentScore2();
-
-    score2El.textContent = game.getScore2();
-    currentScore2El.textContent = 0;
+    ui.displayScore2();
+    ui.displayCurrentScore2();
     game.switchActivePlayer();
   }
 
-  if (game.getScore1() > 50 || game.getScore2() > 50) {
+  if (game.getScore1() > 20 || game.getScore2() > 20) {
     rollBtnEl.removeEventListener("click", rollFunction);
     holdBtnEl.removeEventListener("click", holdFunction);
     diceEl.textContent = "";
