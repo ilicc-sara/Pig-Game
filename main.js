@@ -124,10 +124,10 @@ const holdFunction = function () {
     holdBtnEl.removeEventListener("click", holdFunction);
     diceEl.textContent = "";
 
-    if (game.getScore1() > 50) {
+    if (game.getScore1() > 20) {
       player1El.classList.add("active");
       player2El.classList.remove("active");
-    } else if (game.getScore2() > 50) {
+    } else if (game.getScore2() > 20) {
       player2El.classList.add("active");
       player1El.classList.remove("active");
     }
